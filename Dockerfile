@@ -1,8 +1,8 @@
-# VERSION 1.10.0-2
+# VERSION 1.10.0-3
 # AUTHOR: Matthieu "Puckel_" Roisil
 # DESCRIPTION: Basic Airflow container
-# BUILD: docker build --rm -t puckel/docker-airflow .
-# SOURCE: https://github.com/puckel/docker-airflow
+# BUILD: docker build --rm -t quay.io/volvocars/airflow .
+# SOURCE: https://github.com/quay.io/volvocars/airflow
 
 FROM python:3.6-slim
 LABEL maintainer="Puckel_"
