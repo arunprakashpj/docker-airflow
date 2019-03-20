@@ -1,12 +1,12 @@
 # docker-airflow
-[![CircleCI branch](https://img.shields.io/circleci/project/quay.io/volvocars/airflow/master.svg?maxAge=2592000)](https://circleci.com/gh/puckel/docker-airflow/tree/master)
-[![Docker Build Status](https://img.shields.io/docker/build/quay.io/volvocars/airflow.svg)]()
+[![CircleCI](https://circleci.com/gh/puckel/docker-airflow/tree/master.svg?style=svg)](https://circleci.com/gh/puckel/docker-airflow/tree/master)
+[![Docker Build Status](https://img.shields.io/docker/build/puckel/docker-airflow.svg)]()
 
-[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/quay.io/volvocars/airflow/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/quay.io/volvocars/airflow.svg)]()
-[![Docker Stars](https://img.shields.io/docker/stars/quay.io/volvocars/airflow.svg)]()
+[![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/puckel/docker-airflow/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/puckel/docker-airflow.svg)]()
+[![Docker Stars](https://img.shields.io/docker/stars/puckel/docker-airflow.svg)]()
 
-This repository contains **Dockerfile** of [apache-airflow](https://github.com/apache/incubator-airflow) for [Docker](https://www.docker.com/)'s [automated build](https://registry.hub.docker.com/u/quay.io/volvocars/airflow/) published to the public [Docker Hub Registry](https://registry.hub.docker.com/).
+This repository contains **Dockerfile** of [apache-airflow](https://github.com/apache/incubator-airflow) for [Docker](https://www.docker.com/)'s [automated build](https://registry.hub.docker.com/u/puckel/docker-airflow/) published to the public [Docker Hub Registry](https://registry.hub.docker.com/).
 
 ## Informations
 
@@ -19,21 +19,26 @@ This repository contains **Dockerfile** of [apache-airflow](https://github.com/a
 
 Pull the image from the Docker repository.
 
-    docker pull quay.io/volvocars/airflow
+    docker pull puckel/docker-airflow
 
 ## Build
 
-For example, if you need to install [Extra Packages](https://airflow.incubator.apache.org/installation.html#extra-package), edit the Dockerfile and then build it.
+Optionally install [Extra Airflow Packages](https://airflow.incubator.apache.org/installation.html#extra-package) and/or python dependencies at build time :
 
-    docker build --rm -t quay.io/volvocars/airflow .
+    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" -t puckel/docker-airflow .
+    docker build --rm --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
 
-Don't forget to update the airflow images in the docker-compose files to quay.io/volvocars/airflow:latest.
+or combined
+
+    docker build --rm --build-arg AIRFLOW_DEPS="datadog,dask" --build-arg PYTHON_DEPS="flask_oauthlib>=0.9" -t puckel/docker-airflow .
+
+Don't forget to update the airflow images in the docker-compose files to puckel/docker-airflow:latest.
 
 ## Usage
 
 By default, docker-airflow runs Airflow with **SequentialExecutor** :
 
-    docker run -d -p 8080:8080 quay.io/volvocars/airflow webserver
+    docker run -d -p 8080:8080 puckel/docker-airflow webserver
 
 If you want to run another executor, use the other docker-compose.yml files provided in this repository.
 
@@ -49,7 +54,7 @@ NB : If you want to have DAGs example loaded (default=False), you've to set the 
 
 `LOAD_EX=n`
 
-    docker run -d -p 8080:8080 -e LOAD_EX=y quay.io/volvocars/airflow
+    docker run -d -p 8080:8080 -e LOAD_EX=y puckel/docker-airflow
 
 If you want to use Ad hoc query, make sure you've configured connections:
 Go to Admin -> Connections and Edit "postgres_default" set this values (equivalent to values in airflow.cfg/docker-compose*.yml) :
@@ -60,7 +65,7 @@ Go to Admin -> Connections and Edit "postgres_default" set this values (equivale
 
 For encrypted connection passwords (in Local or Celery Executor), you must have the same fernet_key. By default docker-airflow generates the fernet_key at startup, you have to set an environment variable in the docker-compose (ie: docker-compose-LocalExecutor.yml) file to set the same key accross containers. To generate a fernet_key :
 
-    docker run quay.io/volvocars/airflow python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)"
+    docker run puckel/docker-airflow python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)"
 
 ## Configurating Airflow
 
@@ -106,7 +111,7 @@ This can be used to scale to a multi node setup using docker swarm.
 
 If you want to run other airflow sub-commands, such as `list_dags` or `clear` you can do so like this:
 
-    docker run --rm -ti quay.io/volvocars/airflow airflow list_dags
+    docker run --rm -ti puckel/docker-airflow airflow list_dags
 
 or with your docker-compose set up like this:
 
@@ -114,8 +119,8 @@ or with your docker-compose set up like this:
 
 You can also use this to run a bash shell or any other command in the same environment that airflow would be run in:
 
-    docker run --rm -ti quay.io/volvocars/airflow bash
-    docker run --rm -ti quay.io/volvocars/airflow ipython
+    docker run --rm -ti puckel/docker-airflow bash
+    docker run --rm -ti puckel/docker-airflow ipython
 
 # Wanna help?
 
