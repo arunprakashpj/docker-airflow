@@ -70,8 +70,10 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
+RUN mkdir ${AIRFLOW_HOME}/config
 COPY script/entrypoint.sh /entrypoint.sh
 COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
+COPY config/airflow_local_settings.py ${AIRFLOW_HOME}/config/airflow_local_settings.py
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
