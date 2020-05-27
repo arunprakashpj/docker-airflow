@@ -55,7 +55,7 @@ RUN set -ex \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
-    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,ssh,kubernetes,s3,log,github_enterprise${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
+    && pip install apache-airflow[crypto,statsd,celery,postgres,hive,jdbc,mysql,ssh,kubernetes,s3,log,github_enterprise${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
     && pip install 'redis==3.2' \
     && pip install 'Flask==1.0.4' \
     && if [ -n "${PYTHON_DEPS}" ]; then pip install ${PYTHON_DEPS}; fi \
@@ -77,7 +77,7 @@ COPY config/airflow_local_settings.py ${AIRFLOW_HOME}/config/airflow_local_setti
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
-EXPOSE 8080 5555 8793
+EXPOSE 8080 5555 8793 8125
 
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
